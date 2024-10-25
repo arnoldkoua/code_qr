@@ -9,22 +9,22 @@ from io import BytesIO
 import shutil  # Ajout pour la suppression récursive des dossiers
 
 # Titre de l'application
-st.title("Génération de calendriers avec QR codes")
+st.title("Generate Calendars with QR codes")
 
 # Charger le fichier Excel
-uploaded_file = st.file_uploader("Téléchargez le fichier Excel", type=["xlsx"], key="excel_uploader_unique")
+uploaded_file = st.file_uploader("Download Excel file", type=["xlsx"], key="excel_uploader_unique")
 
 if uploaded_file is not None:
     # Lire les données depuis le fichier Excel
     df = pd.read_excel(uploaded_file)
 
     # Vérifier les colonnes nécessaires
-    required_columns = ["School", "Class", "Child's Name", "Code"]
+    required_columns = ["School", "Class", "Child's Name", "ID"]
     if not all(column in df.columns for column in required_columns):
-        st.error(f"Le fichier Excel doit contenir les colonnes suivantes : {required_columns}")
+        st.error(f"The Excel file must contain the following columns : {required_columns}")
     else:
         # Téléchargement de l'image du calendrier
-        calendar_image = st.file_uploader("Téléchargez l'image du calendrier", type=["png", "jpg", "jpeg"], key="calendar_image_uploader_unique")
+        calendar_image = st.file_uploader("Download calendar image", type=["png", "jpg", "jpeg"], key="calendar_image_uploader_unique")
         
         if calendar_image is not None:
             # Bouton pour générer les QR codes
@@ -45,7 +45,7 @@ if uploaded_file is not None:
                     school = row["School"]
                     child_class = row["Class"]
                     child_name = row["Child's Name"]
-                    code = row["Code"]
+                    code = row["ID"]
 
                     # Convertir les données en une chaîne de caractères séparée par des virgules
                     data_str = f"{school},{child_class},{child_name},{code}"
@@ -96,7 +96,7 @@ if uploaded_file is not None:
 
                 # Télécharger le fichier ZIP
                 st.download_button(
-                    label="Télécharger les QR Codes et calendriers (ZIP)",
+                    label="Download calendars with QR codes (ZIP)",
                     data=zip_buffer,
                     file_name="qr_codes_and_calendars.zip",
                     mime="application/zip"
