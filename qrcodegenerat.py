@@ -6,6 +6,7 @@ import pandas as pd
 import os
 import zipfile
 from io import BytesIO
+import shutil  # Ajout pour la suppression récursive des dossiers
 
 # Titre de l'application
 st.title("Génération de calendriers avec QR codes")
@@ -101,8 +102,6 @@ if uploaded_file is not None:
                     mime="application/zip"
                 )
 
-                # Nettoyage : Supprimer les fichiers temporaires
-                for pdf_file in pdf_files:
-                    os.remove(pdf_file)
+                # Nettoyage : Supprimer les fichiers temporaires et le dossier
+                shutil.rmtree(qr_code_dir)
                 os.remove(calendar_image_path)
-                os.rmdir(qr_code_dir)
