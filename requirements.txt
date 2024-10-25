@@ -3,3 +3,4 @@ qrcode[pil]
 fpdf
 pillow
 pandas
+openpyxl
