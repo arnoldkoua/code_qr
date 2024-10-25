@@ -28,7 +28,7 @@ if uploaded_file is not None:
         
         if calendar_image is not None:
             # Bouton pour générer les QR codes
-            if st.button("Générer QR Code"):
+            if st.button("Generate calendars with QR Code"):
                 # Convertir l'image téléchargée en un chemin temporaire
                 calendar_image_path = f"temp_calendar_image.{calendar_image.name.split('.')[-1]}"
                 with open(calendar_image_path, "wb") as f:
@@ -96,9 +96,9 @@ if uploaded_file is not None:
 
                 # Télécharger le fichier ZIP
                 st.download_button(
-                    label="Download calendars with QR codes (ZIP)",
+                    label="Download calendars with QR codes generated (ZIP)",
                     data=zip_buffer,
-                    file_name="qr_codes_and_calendars.zip",
+                    file_name="calendars_with_qr_code.zip",
                     mime="application/zip"
                 )
 
