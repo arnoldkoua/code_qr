@@ -6,7 +6,7 @@ import pandas as pd
 import os
 import zipfile
 from io import BytesIO
-import shutil  # Ajout pour la suppression récursive des dossiers
+import shutil
 
 # Titre de l'application
 st.title("Generate Calendars with QR codes")
@@ -23,16 +23,21 @@ if uploaded_file is not None:
     if not all(column in df.columns for column in required_columns):
         st.error(f"The Excel file must contain the following columns : {required_columns}")
     else:
-        # Téléchargement de l'image du calendrier
-        calendar_image = st.file_uploader("Download calendar image", type=["png", "jpg", "jpeg"], key="calendar_image_uploader_unique")
+        # Télécharger l'image du calendrier (recto)
+        calendar_image = st.file_uploader("Download calendar image (front side)", type=["png", "jpg", "jpeg"], key="calendar_image_uploader_unique")
+        # Télécharger l'image du verso
+        back_image = st.file_uploader("Download back image (back side)", type=["png", "jpg", "jpeg"], key="back_image_uploader_unique")
         
-        if calendar_image is not None:
+        if calendar_image is not None and back_image is not None:
             # Bouton pour générer les QR codes
             if st.button("Generate calendars with QR Code"):
-                # Convertir l'image téléchargée en un chemin temporaire
+                # Convertir les images téléchargées en chemins temporaires
                 calendar_image_path = f"temp_calendar_image.{calendar_image.name.split('.')[-1]}"
+                back_image_path = f"temp_back_image.{back_image.name.split('.')[-1]}"
                 with open(calendar_image_path, "wb") as f:
                     f.write(calendar_image.getbuffer())
+                with open(back_image_path, "wb") as f:
+                    f.write(back_image.getbuffer())
                 
                 # Générer les QR codes et créer les fichiers PDF
                 pdf_files = []
@@ -71,16 +76,16 @@ if uploaded_file is not None:
                     pdf = FPDF(orientation='L', unit='mm', format='A4')
                     pdf.add_page()
 
-                    # Ajouter l'en-tête avec l'école et le nom de l'enfant
+                    # Ajouter le recto avec l'école, le nom de l'enfant, et le QR code
                     pdf.set_font("Helvetica", 'B', size=12)
                     pdf.cell(25, 0, f"        School : {school}", ln=True, align='L')
                     pdf.cell(25, 20, f"        Name of the child : {child_name}", ln=True, align='L')
-
-                    # Insérer le QR code dans le coin supérieur droit
                     pdf.image(qr_image_path, x=235, y=4, w=35, h=35)
-
-                    # Insérer l'image du calendrier dans le PDF
                     pdf.image(calendar_image_path, x=20, y=35, w=250)
+
+                    # Ajouter le verso
+                    pdf.add_page()
+                    pdf.image(back_image_path, x=10, y=10, w=270)  # Ajustez les dimensions et la position selon vos besoins
 
                     # Sauvegarder le fichier PDF
                     pdf_file_path = os.path.join(qr_code_dir, f"Calendar_for_{child_name.replace(' ', '_')}.pdf")
@@ -107,3 +112,4 @@ if uploaded_file is not None:
                 # Nettoyage : Supprimer les fichiers temporaires et le dossier
                 shutil.rmtree(qr_code_dir)
                 os.remove(calendar_image_path)
+                os.remove(back_image_path)
