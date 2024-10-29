@@ -19,7 +19,7 @@ if uploaded_file is not None:
     df = pd.read_excel(uploaded_file)
 
     # Vérifier les colonnes nécessaires
-    required_columns = ["School", "Class", "Child's Name", "ID"]
+    required_columns = ["Community", "SchoolID", "School", "Class", "Child's Name", "ID"]
     if not all(column in df.columns for column in required_columns):
         st.error(f"The Excel file must contain the following columns : {required_columns}")
     else:
@@ -42,13 +42,15 @@ if uploaded_file is not None:
 
                 for i, row in df.iterrows():
                     # Extraire les données de l'enfant
+                    community = row["Community"]
+                    schoolid = row["SchoolID"]
                     school = row["School"]
                     child_class = row["Class"]
                     child_name = row["Child's Name"]
                     code = row["ID"]
 
                     # Convertir les données en une chaîne de caractères séparée par des virgules
-                    data_str = f"{school},{child_class},{child_name},{code}"
+                    data_str = f"{community},{schoolid},{school},{child_class},{child_name},{code}"
 
                     # Générer le QR code
                     qr = qrcode.QRCode(
