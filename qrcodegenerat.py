@@ -85,7 +85,7 @@ if uploaded_file is not None:
 
                     # Ajouter le verso
                     pdf.add_page()
-                    pdf.image(back_image_path, x=10, y=10, w=270)  # Ajustez les dimensions et la position selon vos besoins
+                    pdf.image(back_image_path, x=10, y=5, w=270)  # Ajustez les dimensions et la position selon vos besoins
 
                     # Sauvegarder le fichier PDF
                     pdf_file_path = os.path.join(qr_code_dir, f"Calendar_for_{child_name.replace(' ', '_')}.pdf")
