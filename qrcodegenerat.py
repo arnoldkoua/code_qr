@@ -73,19 +73,20 @@ if uploaded_file is not None:
                     qr_image.save(qr_image_path)
 
                     # Créer le fichier PDF
-                    pdf = FPDF(orientation='L', unit='mm', format='A4')
-                    pdf.add_page()
+                    pdf = FPDF(unit='mm', format='A4')
 
                     # Ajouter le recto avec l'école, le nom de l'enfant, et le QR code
+                    # Ajouter le recto (page en paysage)
+                    pdf.add_page(orientation='L')
                     pdf.set_font("Helvetica", 'B', size=12)
                     pdf.cell(25, 0, f"        School : {school}", ln=True, align='L')
                     pdf.cell(25, 20, f"        Name of the child : {child_name}", ln=True, align='L')
                     pdf.image(qr_image_path, x=235, y=4, w=35, h=35)
                     pdf.image(calendar_image_path, x=20, y=35, w=250)
 
-                    # Ajouter le verso
-                    pdf.add_page()
-                    pdf.image(back_image_path, x=10, y=5, w=270)  # Ajustez les dimensions et la position selon vos besoins
+                    # Ajouter le verso (page en portrait)
+                    pdf.add_page(orientation='P')
+                    pdf.image(back_image_path, x=10, y=10, w=190)  # Ajustez les dimensions et la position selon vos besoins
 
                     # Sauvegarder le fichier PDF
                     pdf_file_path = os.path.join(qr_code_dir, f"Calendar_for_{child_name.replace(' ', '_')}.pdf")
