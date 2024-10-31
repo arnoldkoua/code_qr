@@ -84,7 +84,7 @@ if uploaded_file is not None:
                     pdf.set_font("Helvetica", 'B', size=12)
                     pdf.cell(25, 0, f"        School : {school}", ln=True, align='L')
                     pdf.cell(25, 20, f"        Class : {child_class}         Name of the child: {child_name}", ln=True, align='L')
-                    pdf.image(qr_image_path, x=235, y=4, w=35, h=35)
+                    pdf.image(qr_image_path, x=235, y=3, w=35, h=35)
                     pdf.image(calendar_image_path, x=20, y=35, w=250)
 
                     # Ajouter le verso (page en portrait)
