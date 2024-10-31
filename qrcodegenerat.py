@@ -19,7 +19,7 @@ if uploaded_file is not None:
     df = pd.read_excel(uploaded_file)
 
     # Vérifier les colonnes nécessaires
-    required_columns = ["Community", "SchoolID", "School", "Class", "Child's Name", "ID"]
+    required_columns = ["community", "school_id", "school_name", "child_id", "child_name", "child_gender", "class", "teacher_name", "teacher_gender"]
     if not all(column in df.columns for column in required_columns):
         st.error(f"The Excel file must contain the following columns : {required_columns}")
     else:
@@ -47,15 +47,18 @@ if uploaded_file is not None:
 
                 for i, row in df.iterrows():
                     # Extraire les données de l'enfant
-                    community = row["Community"]
-                    schoolid = row["SchoolID"]
-                    school = row["School"]
-                    child_class = row["Class"]
-                    child_name = row["Child's Name"]
-                    code = row["ID"]
+                    community = row["community"]
+                    schoolid = row["school_id"]
+                    school = row["school_name"]
+                    child_id = row["child_id"]
+                    child_name = row["child_name"]
+                    child_gender = row["child_gender"]
+                    child_class = row["class"]
+                    teacher_name = row["teacher_name"]
+                    teacher_gender = row["teacher_gender"]
 
                     # Convertir les données en une chaîne de caractères séparée par des virgules
-                    data_str = f"{community},{schoolid},{school},{child_class},{child_name},{code}"
+                    data_str = f"{community},{schoolid},{school},{child_id},{child_name},{child_gender},{child_class},{teacher_name},{teacher_gender}"
 
                     # Générer le QR code
                     qr = qrcode.QRCode(
@@ -80,7 +83,8 @@ if uploaded_file is not None:
                     pdf.add_page(orientation='L')
                     pdf.set_font("Helvetica", 'B', size=12)
                     pdf.cell(25, 0, f"        School : {school}", ln=True, align='L')
-                    pdf.cell(25, 20, f"        Name of the child : {child_name}", ln=True, align='L')
+                    pdf.cell(25, 20, f"        Class : {child_class}", ln=True, align='L')
+                    pdf.cell(25, 40, f"        Name of the child : {child_name}", ln=True, align='L')
                     pdf.image(qr_image_path, x=235, y=4, w=35, h=35)
                     pdf.image(calendar_image_path, x=20, y=35, w=250)
 
