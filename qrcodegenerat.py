@@ -83,9 +83,9 @@ if uploaded_file is not None:
                     pdf.add_page(orientation='L')
                     pdf.set_font("Helvetica", 'B', size=12)
                     # pdf.cell(25, 0, f"        School : {school}", ln=True, align='L')
-                    pdf.cell(100, 20, f"             School : {school}          Class : {child_class}         Name of the child: {child_name}", ln=True, align='L')
-                    pdf.image(qr_image_path, x=10, y=3, w=35, h=35)
-                    pdf.image(calendar_image_path, x=20, y=35, w=250)
+                    pdf.cell(190, 20, f"                              School : {school}          Class : {child_class}         Name of the child: {child_name}", ln=True, align='L')
+                    pdf.image(qr_image_path, x=15, y=3, w=35, h=35)
+                    pdf.image(calendar_image_path, x=20, y=30, w=250)
 
                     # Ajouter le verso (page en portrait)
                     pdf.add_page(orientation='P')
